@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        register = findViewById(R.id.register);
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
