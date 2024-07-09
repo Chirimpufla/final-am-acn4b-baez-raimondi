@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">final-am-acn4b-baez-raimondi</string>
+    <string name="mail">E-mail</string>
+    <string name="contra">Contraseña</string>
+    <string name="login">Iniciar sesion</string>
+    <string name="turno">Turnos pendientes</string>
+    <string name="nuevo">Pedir turno</string>
+    <string name="detalle">Detalles</string>
+    <string name="nombre">Nombre</string>
+    <string name="apellido">Apellido</string>
+    <string name="telefono">Nª de telefono</string>
+    <string name="cambiar">Cambiar Contraseña</string>
+    <string name="guardar">Guardar Cambios</string>
+    <string name="misTurnos">Mis Turnos</string>
+    <string name="register">Registrarse</string>
+    <string name="fecha">Fecha</string>
+    <string name="hora">Hora</string>
 </resources>

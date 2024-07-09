@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+
         logo = findViewById(R.id.logo);
         logo.setImageResource(R.drawable.logo);
 
@@ -52,34 +55,58 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onStart(){
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null){
+            mainRedirect(currentUser);
+        }
+    }
+
     public void login(){
 
         final String USR = user.getText().toString().trim();
-        final String PASS = user.getText().toString().trim();
+        final String PASS = pass.getText().toString().trim();
 
-        mAuth.signInWithEmailAndPassword(USR, PASS).addOnCompleteListener(
-                this,
-                new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
-                            Log.d(TAG, "Inicio de sesion exitoso");
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            if(user != null){
-                                Toast.makeText(getBaseContext(), "Inicio de sesion exitoso.", Toast.LENGTH_SHORT).show();
-                                String name = user.getDisplayName();
-                                String email = user.getEmail();
-                                Intent i = new Intent(getBaseContext(), HomeActivity.class);
-                                i.putExtra("name", name);
-                                i.putExtra("mail", email);
-                                startActivity(i);
+        if(USR.isEmpty()){
+            user.setError("El campo usuario no puede estar vacio.");
+            user.requestFocus();
+        } else if(PASS.isEmpty()){
+            pass.setError("El campo de contraseña no puede estar vacio.");
+            pass.requestFocus();
+        } else {
+
+            mAuth.signInWithEmailAndPassword(USR, PASS).addOnCompleteListener(
+                    this,
+                    new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                                Log.d(TAG, "Inicio de sesion exitoso");
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                if(user != null){
+                                    Toast.makeText(getBaseContext(), "Inicio de sesion exitoso.", Toast.LENGTH_SHORT).show();
+                                    mainRedirect(user);
+                                }
+                            } else {
+                                Log.d(TAG, "Fallo al iniciar sesion" + task.getException());
+                                Toast.makeText(getBaseContext(), "Error al iniciar sesion.", Toast.LENGTH_LONG).show();
                             }
-                        } else {
-                            Log.d(TAG, "Fallo al iniciar sesion" + task.getException());
-                            Toast.makeText(getBaseContext(), "Error al iniciar sesion.", Toast.LENGTH_LONG).show();
                         }
                     }
-                });
+            );
+        }
+    }
+
+    public void mainRedirect(FirebaseUser u){
+
+        String name = u.getDisplayName();
+        String email = u.getEmail();
+        Intent i = new Intent(getBaseContext(), HomeActivity.class);
+        i.putExtra("name", name);
+        i.putExtra("mail", email);
+        startActivity(i);
+
     }
 
 }
