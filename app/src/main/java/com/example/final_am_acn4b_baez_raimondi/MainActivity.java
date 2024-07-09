@@ -53,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        register.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                registerRedirect();
+            }
+        });
+
     }
 
     public void onStart(){
@@ -76,11 +83,17 @@ public class MainActivity extends AppCompatActivity {
             pass.requestFocus();
         } else {
 
+            carga = new ProgressDialog(this);
+            carga.setTitle("Iniciando sesion");
+            carga.setMessage("Por favor espere...");
+            carga.show();
+
             mAuth.signInWithEmailAndPassword(USR, PASS).addOnCompleteListener(
                     this,
                     new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
+                            carga.dismiss();
                             if(task.isSuccessful()){
                                 Log.d(TAG, "Inicio de sesion exitoso");
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -105,6 +118,13 @@ public class MainActivity extends AppCompatActivity {
         Intent i = new Intent(getBaseContext(), HomeActivity.class);
         i.putExtra("name", name);
         i.putExtra("mail", email);
+        startActivity(i);
+
+    }
+
+    public void registerRedirect(){
+
+        Intent i = new Intent(getBaseContext(), RegisterActivity.class);
         startActivity(i);
 
     }
