@@ -65,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void onStart(){
         super.onStart();
+        /*
+            Cerrar sesion
+            mAuth.signOut();
+        */
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             mainRedirect(currentUser);
@@ -114,11 +118,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void mainRedirect(FirebaseUser u){
 
-        String name = u.getDisplayName();
-        String email = u.getEmail();
         Intent i = new Intent(getBaseContext(), HomeActivity.class);
-        i.putExtra("name", name);
-        i.putExtra("mail", email);
+        i.putExtra("user", u);
         startActivity(i);
 
     }

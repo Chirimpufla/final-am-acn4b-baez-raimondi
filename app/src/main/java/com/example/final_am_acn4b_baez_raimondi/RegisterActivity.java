@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -95,8 +96,19 @@ public class RegisterActivity extends AppCompatActivity {
                                                 Log.d("TAG", "Inicio de sesion exitoso.");
                                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                                                 if(user != null){
-                                                    Toast.makeText(getBaseContext(), "Su contraseña es 123456. Puede cambiarla tocando la foto en la pagina principal.", Toast.LENGTH_LONG).show();
-                                                    homeRedirect(user);
+                                                    UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+                                                            .setDisplayName(NAME + " " + SURNAME)
+                                                            .build();
+                                                    user.updateProfile(profileUpdate)
+                                                                .addOnCompleteListener(
+                                                                        new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                Toast.makeText(getBaseContext(), "Su contraseña es 123456. Puede cambiarla tocando la foto en la pagina principal.", Toast.LENGTH_LONG).show();
+                                                                                homeRedirect(user);
+                                                                            }
+                                                                        }
+                                                                );
                                                 }
                                             }
                                         });
@@ -112,12 +124,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     public void homeRedirect(FirebaseUser u){
 
-        String name = u.getDisplayName();
-        String mail = u.getEmail();
-
         Intent i = new Intent(this, MainActivity.class);
-        i.putExtra("name", name);
-        i.putExtra("mail", mail);
+        i.putExtra("user", u);
         startActivity(i);
 
     }
