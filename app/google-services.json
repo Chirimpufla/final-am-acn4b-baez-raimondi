@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "21376865408",
+    "project_id": "turnera-79aaf",
+    "storage_bucket": "turnera-79aaf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:21376865408:android:b3edb7e1780a498e580265",
+        "android_client_info": {
+          "package_name": "com.example.final_am_acn4b_baez_raimondi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0mkbiJYQwDJMRJi8tOGKmib5UX4Wpbc8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
