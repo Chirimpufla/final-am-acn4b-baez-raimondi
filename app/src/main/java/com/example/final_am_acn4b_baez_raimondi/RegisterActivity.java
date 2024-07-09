@@ -19,10 +19,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private final String TAG = "EmailPassword";
+    private FirebaseFirestore db;
     private FirebaseAuth mAuth;
     private ImageView avatar;
     private EditText nombre, apellido, telefono, mail;
@@ -84,6 +89,8 @@ public class RegisterActivity extends AppCompatActivity {
             carga.setMessage("Por favor espere...");
             carga.show();
 
+            db = FirebaseFirestore.getInstance();
+
             mAuth.createUserWithEmailAndPassword(EMAIL, PASS)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
@@ -104,8 +111,21 @@ public class RegisterActivity extends AppCompatActivity {
                                                                         new OnCompleteListener<Void>() {
                                                                             @Override
                                                                             public void onComplete(@NonNull Task<Void> task) {
-                                                                                Toast.makeText(getBaseContext(), "Su contraseña es 123456. Puede cambiarla tocando la foto en la pagina principal.", Toast.LENGTH_LONG).show();
-                                                                                homeRedirect(user);
+                                                                                Map<String, Object> params = new HashMap<>();
+                                                                                params.put("name", NAME);
+                                                                                params.put("surname", SURNAME);
+                                                                                params.put("activo", true);
+                                                                                db.collection("usuarios").document(user.getUid())
+                                                                                    .set(params)
+                                                                                    .addOnCompleteListener(
+                                                                                            new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    Toast.makeText(getBaseContext(), "Su contraseña es 123456. Puede cambiarla tocando la foto en la pagina principal.", Toast.LENGTH_LONG).show();
+                                                                                                    homeRedirect(user);
+                                                                                                }
+                                                                                            }
+                                                                                    );
                                                                             }
                                                                         }
                                                                 );
