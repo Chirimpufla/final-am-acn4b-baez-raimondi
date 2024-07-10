@@ -14,10 +14,15 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -99,6 +104,43 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void guardar(){
 
+        final String NAME = nombre.getText().toString().trim();
+        final String SURNAME = apellido.getText().toString().trim();
+
+        UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
+            .setDisplayName(NAME + " " + SURNAME)
+            .build();
+        user.updateProfile(profileUpdate).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            Map <String, Object> params = new HashMap<>();
+                            params.put("name", NAME);
+                            params.put("surname", SURNAME);
+                            DocumentReference docRef = db.collection("usuarios").document(user.getUid());
+                            docRef.update(params).addOnCompleteListener(
+                                    new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()){
+                                                Toast.makeText(getBaseContext(), "Cambios realizados con exito.", Toast.LENGTH_SHORT).show();
+                                                homeRedirect();
+                                            } else {
+                                                Log.d(TAG, "Error: ", task.getException());
+                                                Toast.makeText(getBaseContext(), "No se pudieron realizar los cambios.", Toast.LENGTH_SHORT).show();
+                                            }
+                                        }
+                                    }
+                            );
+                        } else {
+                            Log.d(TAG, "Error: ", task.getException());
+                            Toast.makeText(getBaseContext(), "Ha ocurrido un error al realizar el cambio. Por favor intente mas tarde.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }
+        );
+
     }
 
     public void cambiarContrasena(){
@@ -106,8 +148,11 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void homeRedirect(){
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
         Intent i = new Intent(this, HomeActivity.class);
         i.putExtra("user", user);
         startActivity(i);
+
     }
 }

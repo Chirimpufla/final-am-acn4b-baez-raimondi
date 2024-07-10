@@ -68,6 +68,8 @@ public class HomeActivity extends AppCompatActivity {
         listar();
     }
 
+
+
     public void redirect(Class c){
         Intent i = new Intent(this, c);
         i.putExtra("user", usuario);
