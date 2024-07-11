@@ -1,9 +1,12 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -19,6 +22,10 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity {
 
     private final String TAG = "DBResponse";
@@ -28,6 +35,8 @@ public class HomeActivity extends AppCompatActivity {
     private ListView listaTurnos;
     private FirebaseUser usuario;
     private FirebaseFirestore db;
+    private ArrayList<DataModel> datamodels;
+    private CustomAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,9 +103,18 @@ public class HomeActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if(task.isSuccessful()){
-                        for (QueryDocumentSnapshot document : task.getResult()){
-                            //continuara...
+                        datamodels = new ArrayList<>();
+                        for(QueryDocumentSnapshot document : task.getResult()){
+                            datamodels.add(new DataModel(
+                                    document.getString("name"),
+                                    document.getString("surname"),
+                                    document.getString("fecha"),
+                                    document.getString("hora")
+                            ));
                         }
+
+                        adapter = new CustomAdapter(datamodels, getBaseContext());
+                        listaTurnos.setAdapter(adapter);
                     }
                 }
             });

@@ -35,7 +35,7 @@
         android:src="@android:drawable/ic_menu_delete"
         tools:ignore="RtlHardcoded" />
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
@@ -51,9 +51,10 @@
             android:id="@+id/list_hora"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/list_fecha"
             android:text="00:00"
             android:textColor="@color/black"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>
