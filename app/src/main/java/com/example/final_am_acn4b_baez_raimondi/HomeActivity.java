@@ -39,6 +39,8 @@ public class HomeActivity extends AppCompatActivity {
             usuario = (FirebaseUser) extras.get("user");
         }
 
+        db = FirebaseFirestore.getInstance();
+
         avatar = findViewById(R.id.avatar);
         avatar.setImageResource(R.drawable.avatar);
         avatar.setOnClickListener(
@@ -83,22 +85,20 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void listar(){
-        db = FirebaseFirestore.getInstance();
-        db.collection("turnos")
-                .get()
-                .addOnCompleteListener(
-                        new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()){
-                                    for (QueryDocumentSnapshot document : task.getResult()){
-                                        Log.d(TAG, document.getId() + " => " + document.getData());
-                                    }
-                                } else {
-                                    Log.d(TAG, "Error al recuperar los datos: ", task.getException());
-                                }
-                            }
+        db.collection("usuarios")
+            .document(usuario.getUid())
+            .collection("turnos")
+            .whereEqualTo("estado", "vigente")
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for (QueryDocumentSnapshot document : task.getResult()){
+                            //continuara...
                         }
-                );
+                    }
+                }
+            });
     }
 }
