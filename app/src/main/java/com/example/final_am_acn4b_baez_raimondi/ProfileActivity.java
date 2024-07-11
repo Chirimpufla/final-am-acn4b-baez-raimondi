@@ -1,5 +1,6 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,6 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button cambiar, guardar;
     private FirebaseUser user;
     private FirebaseFirestore db;
+    private ProgressDialog carga;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,8 @@ public class ProfileActivity extends AppCompatActivity {
         if (extras != null){
             user = (FirebaseUser) extras.get("user");
         }
+
+        carga = new ProgressDialog(this);
 
         db = FirebaseFirestore.getInstance();
 
@@ -106,6 +110,9 @@ public class ProfileActivity extends AppCompatActivity {
 
         final String NAME = nombre.getText().toString().trim();
         final String SURNAME = apellido.getText().toString().trim();
+        carga.setTitle("Realizando cambios.");
+        carga.setMessage("Por favor espere...");
+        carga.show();
 
         UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
             .setDisplayName(NAME + " " + SURNAME)
@@ -125,8 +132,10 @@ public class ProfileActivity extends AppCompatActivity {
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()){
                                                 Toast.makeText(getBaseContext(), "Cambios realizados con exito.", Toast.LENGTH_SHORT).show();
+                                                carga.dismiss();
                                                 homeRedirect();
                                             } else {
+                                                carga.dismiss();
                                                 Log.d(TAG, "Error: ", task.getException());
                                                 Toast.makeText(getBaseContext(), "No se pudieron realizar los cambios.", Toast.LENGTH_SHORT).show();
                                             }
@@ -145,6 +154,22 @@ public class ProfileActivity extends AppCompatActivity {
 
     public void cambiarContrasena(){
 
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        String newPass = pass.getText().toString().trim();
+        carga.setTitle("Realizando cambios.");
+        carga.setMessage("Por favor espere...");
+        carga.show();
+
+        user.updatePassword(newPass).addOnCompleteListener(
+                new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        carga.dismiss();
+                        Toast.makeText(getBaseContext(), "Contraseña modificada exitosamente.", Toast.LENGTH_SHORT).show();
+                        homeRedirect();
+                    }
+                }
+        );
     }
 
     public void homeRedirect(){

@@ -1,7 +1,6 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
 
 import android.app.ProgressDialog;
@@ -17,7 +16,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -69,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             Cerrar sesion
             mAuth.signOut();
         */
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
             mainRedirect(currentUser);
