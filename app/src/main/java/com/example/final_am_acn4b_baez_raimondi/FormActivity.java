@@ -122,6 +122,7 @@ public class FormActivity extends AppCompatActivity {
                                 params.put("fecha", FECHA);
                                 params.put("hora", HORA);
                                 params.put("estado", "vigente");
+                                params.put("id", 1);
                                 db.collection("usuarios")
                                     .document(user.getUid())
                                     .collection("turnos")
@@ -160,6 +161,7 @@ public class FormActivity extends AppCompatActivity {
                                                 params.put("fecha", FECHA);
                                                 params.put("hora", HORA);
                                                 params.put("estado", "vigente");
+                                                params.put ("id", id);
                                                 db.collection("usuarios")
                                                     .document(user.getUid())
                                                     .collection("turnos")

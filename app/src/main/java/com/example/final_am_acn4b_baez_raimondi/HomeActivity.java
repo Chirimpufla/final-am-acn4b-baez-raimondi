@@ -134,7 +134,8 @@ public class HomeActivity extends AppCompatActivity {
                                     document.getString("name"),
                                     document.getString("surname"),
                                     document.getString("fecha"),
-                                    document.getString("hora")
+                                    document.getString("hora"),
+                                    Integer.valueOf(document.getId())
                             ));
                         }
 
