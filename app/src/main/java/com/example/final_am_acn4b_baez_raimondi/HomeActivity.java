@@ -1,11 +1,14 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Adapter;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -77,6 +80,28 @@ public class HomeActivity extends AppCompatActivity {
 
         listaTurnos = findViewById(R.id.turnos_list);
         listar();
+        listaTurnos.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                Object object = parent.getItemAtPosition(position);
+                DataModel dataModel = (DataModel) object;
+
+                AlertDialog.Builder alerta = new AlertDialog.Builder(HomeActivity.this);
+                alerta.setTitle("Información del turno: ");
+                alerta.setMessage("Nombre: " + dataModel.getName() + " " + dataModel.getSurname() +
+                        " - Fecha: " + dataModel.getFecha() + " - Hora: " + dataModel.getHora());
+                alerta.setCancelable(false);
+                alerta.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alerta.show();
+            }
+        });
     }
 
     public void redirect(Class c){
@@ -113,7 +138,7 @@ public class HomeActivity extends AppCompatActivity {
                             ));
                         }
 
-                        adapter = new CustomAdapter(datamodels, getBaseContext());
+                        adapter = new CustomAdapter(datamodels, HomeActivity.this);
                         listaTurnos.setAdapter(adapter);
                     }
                 }
