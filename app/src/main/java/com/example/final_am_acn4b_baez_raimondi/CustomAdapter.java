@@ -74,27 +74,25 @@ public class CustomAdapter extends ArrayAdapter<DataModel> implements View.OnCli
                     .document(user.getUid())
                     .collection("turnos")
                     .document(String.valueOf(dataModel.getId()))
-                    .update("estado", "cancelado.")
+                    .update("estado", "cancelado")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            carga.dismiss();
+                            dialog.dismiss();
                             if(task.isSuccessful()){
-                                carga.dismiss();
-                                dialog.dismiss();
                                 Toast.makeText(v.getContext(),
                                 "Turno cancelado.",
                                     Toast.LENGTH_SHORT).show();
+                                dataSet.remove(position);
+                                notifyDataSetChanged();
                             } else {
-                                carga.dismiss();
                                 Toast.makeText(v.getContext(),
                                     "Ha ocurrido un error. Por favor intente mas tarde.",
                                     Toast.LENGTH_SHORT).show();
-                                dialog.dismiss();
                             }
                         }
                     });
-
-                dialog.dismiss();
             }
         });
         alerta.setNegativeButton("No", new DialogInterface.OnClickListener() {
