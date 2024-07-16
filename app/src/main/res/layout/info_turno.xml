@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/turno_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/black"
+        android:layout_alignParentEnd="true"/>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="?android:attr/listDivider"
+        android:layout_below="@id/turno_title"/>
+
+    <ImageView
+        android:id="@+id/turno_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
+        android:src="@android:drawable/ic_dialog_info"/>
+
+    <TableLayout
+        android:id="@+id/turno_lista"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stretchColumns="1"
+        android:layout_below="@+id/divider">
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/nombre"
+                android:padding="3dp" />
+            <TextView
+                android:id="@+id/turno_nombre"
+                android:text=""
+                android:gravity="right"
+                android:padding="3dp"
+                android:src="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/fecha"
+                android:padding="3dp" />
+            <TextView
+                android:id="@+id/turno_fecha"
+                android:text=""
+                android:gravity="right"
+                android:padding="3dp"
+                android:src="?android:attr/textAppearanceMedium" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:layout_column="1"
+                android:text="@string/hora"
+                android:padding="3dp" />
+            <TextView
+                android:id="@+id/turno_hora"
+                android:text=""
+                android:gravity="right"
+                android:padding="3dp"
+                android:src="?android:attr/textAppearanceMedium" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/turno_ok"
+        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ok"
+        android:layout_below="@+id/turno_lista"/>
+</RelativeLayout>

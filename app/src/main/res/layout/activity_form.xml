@@ -21,15 +21,17 @@
 
     <EditText
         android:id="@+id/form_fecha"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="48dp"
         android:ems="10"
-        android:hint="Fecha"
-        android:inputType="date"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
+        android:hint="@string/fecha"
+        android:clickable="true"
+        android:cursorVisible="false"
+        android:focusable="false"
+        app:layout_constraintEnd_toEndOf="@+id/form_apellido"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="@+id/form_apellido"
         app:layout_constraintTop_toBottomOf="@+id/form_apellido" />
 
     <EditText
@@ -75,6 +77,9 @@
         android:layout_marginTop="44dp"
         android:ems="10"
         android:hint="Hora"
+        android:clickable="true"
+        android:cursorVisible="false"
+        android:focusable="false"
         android:inputType="time"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

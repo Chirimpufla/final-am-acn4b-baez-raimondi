@@ -1,6 +1,7 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.nfc.Tag;
@@ -24,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -84,22 +87,30 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-
                 Object object = parent.getItemAtPosition(position);
                 DataModel dataModel = (DataModel) object;
 
-                AlertDialog.Builder alerta = new AlertDialog.Builder(HomeActivity.this);
-                alerta.setTitle("Información del turno: ");
-                alerta.setMessage("Nombre: " + dataModel.getName() + " " + dataModel.getSurname() +
-                        " - Fecha: " + dataModel.getFecha() + " - Hora: " + dataModel.getHora());
-                alerta.setCancelable(false);
-                alerta.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                Dialog info_turno = new Dialog(view.getContext());
+                info_turno.setContentView(R.layout.info_turno);
+
+                TextView txtTitulo = (TextView) info_turno.findViewById(R.id.turno_title);
+                TextView txtNombre = (TextView) info_turno.findViewById(R.id.turno_nombre);
+                TextView txtFecha = (TextView) info_turno.findViewById(R.id.turno_fecha);
+                TextView txtHora = (TextView) info_turno.findViewById(R.id.turno_hora);
+                Button ok = (Button) info_turno.findViewById(R.id.turno_ok);
+
+                txtTitulo.setText("Información del turno: ");
+                txtNombre.setText(dataModel.getName() + " " + dataModel.getSurname());
+                txtFecha.setText(dataModel.getFecha());
+                txtHora.setText(dataModel.getHora());
+                ok.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
+                    public void onClick(View v) {
+                        info_turno.dismiss();
                     }
                 });
-                alerta.show();
+
+                info_turno.show();
             }
         });
     }

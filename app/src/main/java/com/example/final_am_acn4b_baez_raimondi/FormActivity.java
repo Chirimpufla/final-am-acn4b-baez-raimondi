@@ -1,14 +1,19 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
+import android.annotation.SuppressLint;
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,8 +27,13 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.protobuf.StringValue;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class FormActivity extends AppCompatActivity {
@@ -36,6 +46,7 @@ public class FormActivity extends AppCompatActivity {
     private FirebaseUser user;
     private FirebaseFirestore db;
     private ProgressDialog carga;
+    private final Calendar myCalendar = Calendar.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,8 +75,62 @@ public class FormActivity extends AppCompatActivity {
         apellido = findViewById(R.id.form_apellido);
 
         fecha = findViewById(R.id.form_fecha);
+        DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+                Date today = new Date();
+                Calendar hoy = Calendar.getInstance();
+                hoy.set(Calendar.YEAR, today.getYear());
+                hoy.set(Calendar.MONTH, today.getMonth() + 1);
+                hoy.set(Calendar.DAY_OF_MONTH, today.getMonth());
+
+                myCalendar.set(Calendar.YEAR, year);
+                Log.d(TAG, String.valueOf(myCalendar.get(Calendar.YEAR)));
+                myCalendar.set(Calendar.MONTH, month);
+                myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                if (myCalendar.after(hoy)){
+                    updateLabel();
+                }
+            }
+        };
+        fecha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new DatePickerDialog(FormActivity.this, date, myCalendar.get(Calendar.YEAR), myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+            }
+        });
 
         hora = findViewById(R.id.form_hora);
+        hora.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TimePickerDialog timePickerDialog = new TimePickerDialog(FormActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        Calendar tempDate = Calendar.getInstance();
+                        tempDate.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                        tempDate.set(Calendar.MINUTE, minute);
+
+                        Calendar min = Calendar.getInstance();
+                        min.set(Calendar.HOUR_OF_DAY, 9);
+                        min.set(Calendar.MINUTE, 59);
+
+                        Calendar max = Calendar.getInstance();
+                        max.set(Calendar.HOUR_OF_DAY, 19);
+                        max.set(Calendar.MINUTE, 1);
+
+                        if(tempDate.after(min) && tempDate.before(max)){
+                            hora.setText(String.format("%02d:%02d", hourOfDay, minute));
+                        } else {
+                            Toast.makeText(FormActivity.this, "Horarios disponibles: 10 a 19hs.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+                }, 0, 0, true);
+                timePickerDialog.show();
+            }
+        });
 
         registrar = findViewById(R.id.registrar_turno);
         registrar.setOnClickListener(
@@ -193,5 +258,11 @@ public class FormActivity extends AppCompatActivity {
                     }
                 });
         }
+    }
+
+    private void updateLabel(){
+        String myFormat = "yyyy/MM/dd";
+        SimpleDateFormat dateFormat = new SimpleDateFormat(myFormat, Locale.JAPAN);
+        fecha.setText(dateFormat.format(myCalendar.getTime()));
     }
 }
