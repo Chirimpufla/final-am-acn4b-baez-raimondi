@@ -1,16 +1,13 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.nfc.Tag;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -21,16 +18,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -43,6 +37,7 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseFirestore db;
     private ArrayList<DataModel> datamodels;
     private CustomAdapter adapter;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,10 +104,34 @@ public class HomeActivity extends AppCompatActivity {
                         info_turno.dismiss();
                     }
                 });
-
                 info_turno.show();
             }
         });
+    }
+
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onBackPressed(){
+
+        mAuth = FirebaseAuth.getInstance();
+        AlertDialog.Builder alerta = new AlertDialog.Builder(this);
+        alerta.setTitle("Cerrar Sesion.");
+        alerta.setMessage("¿Esta seguro que desea cerrar sesion?");
+        alerta.setPositiveButton("Sí", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mAuth.signOut();
+                Intent i = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(i);
+            }
+        });
+        alerta.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alerta.show();
     }
 
     public void redirect(Class c){
