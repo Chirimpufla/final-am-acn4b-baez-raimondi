@@ -15,4 +15,5 @@
     <string name="register">Registrarse</string>
     <string name="fecha">Fecha</string>
     <string name="hora">Hora</string>
+    <string name="logout">Cerrar Sesion</string>
 </resources>

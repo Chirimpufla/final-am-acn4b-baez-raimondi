@@ -7,6 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".ProfileActivity">
 
+    <ImageButton
+        android:id="@+id/profile_volver"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.023"
+        app:srcCompat="@android:drawable/ic_menu_revert" />
+
     <EditText
         android:id="@+id/profile_password"
         android:layout_width="197dp"
@@ -32,6 +44,18 @@
         app:layout_constraintTop_toBottomOf="@+id/profile_password"
         app:layout_constraintVertical_bias="0.0" />
 
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="@string/logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_password"
+        app:layout_constraintVertical_bias="0.807" />
+
     <EditText
         android:id="@+id/profile_user"
         android:layout_width="197dp"
@@ -48,7 +72,7 @@
         android:id="@+id/profile_avatar"
         android:layout_width="235dp"
         android:layout_height="178dp"
-        android:layout_marginTop="72dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"

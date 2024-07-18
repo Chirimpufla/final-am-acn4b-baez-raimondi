@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -30,7 +31,8 @@ public class ProfileActivity extends AppCompatActivity {
     private final String TAG = "DBResponse";
     private ImageView avatar;
     private EditText nombre, apellido,pass;
-    private Button cambiar, guardar;
+    private Button cambiar, guardar, logout;
+    private ImageButton volver;
     private FirebaseUser user;
     private FirebaseFirestore db;
     private ProgressDialog carga;
@@ -49,6 +51,13 @@ public class ProfileActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
+        volver = findViewById(R.id.profile_volver);
+        volver.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                homeRedirect();
+            }
+        });
 
         avatar = findViewById(R.id.profile_avatar);
         avatar.setImageResource(R.drawable.avatar);
@@ -81,6 +90,19 @@ public class ProfileActivity extends AppCompatActivity {
                     }
                 }
         );
+
+        logout = findViewById(R.id.logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
+                Toast.makeText(getBaseContext(),"Hasta pronto.", Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(getBaseContext(), MainActivity.class);
+                startActivity(i);
+
+            }
+        });
 
     }
 

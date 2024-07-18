@@ -1,6 +1,5 @@
 package com.example.final_am_acn4b_baez_raimondi;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
@@ -27,7 +26,6 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.protobuf.StringValue;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -86,7 +84,6 @@ public class FormActivity extends AppCompatActivity {
                 hoy.set(Calendar.DAY_OF_MONTH, today.getMonth());
 
                 myCalendar.set(Calendar.YEAR, year);
-                Log.d(TAG, String.valueOf(myCalendar.get(Calendar.YEAR)));
                 myCalendar.set(Calendar.MONTH, month);
                 myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
